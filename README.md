@@ -10,7 +10,7 @@ Do pliku INPUT.txt wpisujemy:
 
 
 ![example](https://user-images.githubusercontent.com/53000695/78778318-620afb00-799b-11ea-846e-37eea2fd5a25.PNG)
-Na przykład, jeśli chcemy przenieść wybraną prostą do INPUT.txt, wpiszemy:
+Na przykład, jeśli chcemy przenieść wybraną prostą do INPUT.txt, tak by alarm uruchomił się, gdy cena zbliży się na odległość 2 (w osi pionowej), wpiszemy:
 ```
 ETHUSDT
 174.29 4 7 0 15

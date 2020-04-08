@@ -1,4 +1,4 @@
-fromb binance.websockets import BinanceSocketManager
+froam binance.websockets import BinanceSocketManager
 from binance.client import Client
 from time import sleep
 import plotly.graph_objects as go
@@ -10,7 +10,7 @@ import winsound
 
 
 lines = []
-
+client = Client("","")
 
 def get_time(arr, now):
     timezone=now/1000-(int)(time.time())
@@ -21,8 +21,6 @@ def linear(line, now):
     return (line[1][0]-line[0][0])*(now-get_time(line[0][1], now))/(get_time(line[1][1], now)-get_time(line[0][1], now)) + line[0][0]
 
 def process_message(msg):
-   # print(msg)
-
     price=float(msg['c'])
     now=msg['E']
 
@@ -37,6 +35,7 @@ def process_message(msg):
 
 def add_line(p1, p2, buf):
     lines.append([p1,p2, buf])
+    print("Dodano linie: ", lines[-1])
 
 def show_lines():
     candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_15MINUTE, limit=1000)
@@ -66,18 +65,33 @@ def show_lines():
         return False
 
 
-client = Client("","")
-add_line([6826, [3, 24, 20, 45]], [4160, [3, 15, 12, 30]], 100)
+
+def main():
+
+    data = []
+    with open("INPUT.txt") as inp: 
+        Lines = inp.readlines()
+        SYMBOL = Lines[0]
+        for line in Lines[1:]:
+            if line.replace("\n", ""): data.append(line.replace("\n", ""))
+
+    c=0
+    while c+3<=len(data):
+        one = list(map(int, data[c].split()))
+        two = list(map(int, data[c+1].split()))
+        add_line([one[0], one[1:]], [two[0], two[1:]], int(data[c+2]))
+        c+=3    
 
 
-if show_lines():
-    bm = BinanceSocketManager(client)
-    conn_key = bm.start_symbol_ticker_socket('BTCUSDT', process_message)
-    bm.start()
+    if show_lines():
+        bm = BinanceSocketManager(client)
+        conn_key = bm.start_symbol_ticker_socket('BTCUSDT', process_message)
+        bm.start()
 
 
 
 
 
-
+if __name__== "__main__":
+  main()
 

@@ -1,4 +1,4 @@
-froam binance.websockets import BinanceSocketManager
+from binance.websockets import BinanceSocketManager
 from binance.client import Client
 from time import sleep
 import plotly.graph_objects as go
@@ -26,7 +26,7 @@ def process_message(msg):
 
     print("----------", datetime.datetime.fromtimestamp(round(now/1000)), "----------")
     print("  Latest price:", price)
-    for line in lines:
+    for i, line in enumerate(lines):
         lin_price =linear(line, now) 
         print("  Price triggering alarm", round(lin_price,2), "+-",line[2])
         if abs(price-lin_price)<line[2]:
@@ -55,7 +55,7 @@ def show_lines():
     fig.show()
     time.sleep(3)
 
-    czy = "y"#input("Czy tak ma byc? (y/n)\n>")
+    czy = input("Czy tak ma byc? (y/n)\n>")
 
     if czy.lower()=='y'or czy.lower()=="yes":
         print("Zatwierdzone zostalo!")
@@ -67,7 +67,6 @@ def show_lines():
 
 
 def main():
-
     data = []
     with open("INPUT.txt") as inp: 
         Lines = inp.readlines()

@@ -9,7 +9,7 @@ Do pliku INPUT.txt wpisujemy:
  - W jakiej odległości od prostej ma być alarm
 
 
-![Wykres](wykres.png)
+![example](https://user-images.githubusercontent.com/53000695/78778318-620afb00-799b-11ea-846e-37eea2fd5a25.PNG)
 Na przykład, jeśli chcemy przenieść wybraną prostą do INPUT.txt, wpiszemy:
 ```
 ETHUSDT

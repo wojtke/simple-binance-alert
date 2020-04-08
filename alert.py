@@ -11,6 +11,7 @@ import winsound
 
 lines = []
 client = Client("","")
+SYMBOL = ""
 
 def get_time(arr, now):
     timezone=now/1000-(int)(time.time())
@@ -38,7 +39,7 @@ def add_line(p1, p2, buf):
     print("Dodano linie: ", lines[-1])
 
 def show_lines():
-    candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_15MINUTE, limit=1000)
+    candles = client.get_klines(symbol=SYMBOL, interval=Client.KLINE_INTERVAL_15MINUTE, limit=1000)
     df = pd.DataFrame(candles)
     df = df[[0,1,2,3,4]]
     fig = go.Figure(data=[go.Candlestick(x=df[0],
@@ -49,8 +50,12 @@ def show_lines():
 
     now = candles[-1][0]
 
+    fig.update_layout(showlegend=False,
+                        title = f"Wykres ceny {SYMBOL}",
+                        yaxis_title = "Cena")
+
     for line in lines:
-        fig.add_trace(go.Scatter(x=[get_time(line[0][1], now), get_time(line[1][1], now)], y=[line[0][0], line[1][0]], name="linear", line_shape='linear'))
+        fig.add_trace(go.Scatter(x=[get_time(line[0][1], now), get_time(line[1][1], now)], y=[line[0][0], line[1][0]], name="Linia", line_shape='linear'))
 
     fig.show()
     time.sleep(3)
@@ -70,7 +75,8 @@ def main():
     data = []
     with open("INPUT.txt") as inp: 
         Lines = inp.readlines()
-        SYMBOL = Lines[0]
+        global SYMBOL
+        SYMBOL = Lines[0].strip()
         for line in Lines[1:]:
             if line.replace("\n", ""): data.append(line.replace("\n", ""))
 
@@ -84,7 +90,7 @@ def main():
 
     if show_lines():
         bm = BinanceSocketManager(client)
-        conn_key = bm.start_symbol_ticker_socket('BTCUSDT', process_message)
+        conn_key = bm.start_symbol_ticker_socket(SYMBOL, process_message)
         bm.start()
 
 

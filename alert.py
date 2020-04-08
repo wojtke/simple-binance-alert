@@ -76,9 +76,9 @@ def main():
 
     c=0
     while c+3<=len(data):
-        one = list(map(int, data[c].split()))
-        two = list(map(int, data[c+1].split()))
-        add_line([one[0], one[1:]], [two[0], two[1:]], int(data[c+2]))
+        one = data[c].split()
+        two = data[c+1].split()
+        add_line([float(one[0]), list(map(int, one[1:]))], [float(two[0]), list(map(int, two[1:]))], int(data[c+2]))
         c+=3    
 
 
